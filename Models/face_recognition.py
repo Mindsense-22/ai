@@ -4,7 +4,7 @@ from transformers import pipeline
 import io
 
 device = 0 if torch.cuda.is_available() else -1
-MODEL_NAME = "./my_local_model"
+MODEL_NAME = "dima806/facial_emotions_image_detection"
 
 print(f"🔄 Loading Face Model on {'GPU' if device == 0 else 'CPU'}...")
 emotion_classifier = pipeline(
@@ -53,4 +53,5 @@ def analyze_face_stream(image_input):
 
     except Exception as e:
         print(f"❌ Face Error: {e}")
+
         return "Neutral"
