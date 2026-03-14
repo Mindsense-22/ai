@@ -10,7 +10,7 @@ from langchain_core.prompts import PromptTemplate
 
 load_dotenv()
 
-PDF_PATH = r"c:/Users/ebrah/Emotion Project/rag/protocols.pdf"
+PDF_PATH = r"rag/protocols.pdf"
 
 if not os.path.exists(PDF_PATH):
     raise FileNotFoundError(f"❌ PDF file not found at: {PDF_PATH}")
@@ -78,16 +78,3 @@ def get_intervention(mental_state: str) -> str:
     
     coaching_response = get_coach_advice(mental_state, protocol_text)
     return coaching_response
-
-
-if __name__ == "__main__":
-    test_state = "Angry"  
-    print(f"🔍 Searching interventions for: {test_state}...")
-    
-    advice = get_intervention(test_state)
-    
-    print("\n" + "="*40)
-    print("🎯 AI Coach Intervention (Powered by Groq):")
-    print("="*40)
-    print(advice)
-    print("="*40)
