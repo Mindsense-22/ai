@@ -12,7 +12,7 @@ pillow
 
 python-dotenv
 
-langchain
+langchain==0.1.0
 langchain-community
 langchain-core
 langchain-huggingface
