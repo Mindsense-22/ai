@@ -1,104 +1,8 @@
-# from fastapi import FastAPI, UploadFile, File
-# from fastapi.middleware.cors import CORSMiddleware
-
-# from Models.face_recognition import analyze_face_stream
-# from Models.online_Voice_model import analyze_voice_stream
-# from Rag.knowledge_base import get_intervention
-
-# app = FastAPI()
-
-# # عشان تشتغل مع React أو أي Frontend
-# app.add_middleware(
-#     CORSMiddleware,
-#     allow_origins=["*"],
-#     allow_credentials=True,
-#     allow_methods=["*"],
-#     allow_headers=["*"],
-# )
-
-
-# # ==========================================================
-# # 1. Face Emotion Endpoint
-# # ==========================================================
-# @app.post("/analyze-face")
-# async def analyze_face(file: UploadFile = File(...)):
-#     try:
-#         image_bytes = await file.read()
-#         result = analyze_face_stream(image_bytes)
-
-#         return {"status": "success", "emotion": result}
-
-#     except Exception as e:
-#         return {"status": "error", "message": str(e)}
-
-
-# # ==========================================================
-# # 2. Voice Emotion Endpoint
-# # ==========================================================
-# @app.post("/analyze-voice")
-# async def analyze_voice(file: UploadFile = File(...)):
-#     try:
-#         audio_bytes = await file.read()
-#         result = analyze_voice_stream(audio_bytes)
-
-#         return result
-
-#     except Exception as e:
-#         return {"status": "error", "message": str(e)}
-
-
-# # ==========================================================
-# # 3. Get AI Coaching Advice
-# # ==========================================================
-# @app.post("/get-advice")
-# async def get_advice(data: dict):
-#     try:
-#         mental_state = data.get("state", "Neutral")
-
-#         advice = get_intervention(mental_state)
-
-#         return {"status": "success", "advice": advice}
-
-#     except Exception as e:
-#         return {"status": "error", "message": str(e)}
-
-
-# # ==========================================================
-# # 4. Combined Endpoint (🔥 الأهم)
-# # ==========================================================
-# @app.post("/analyze-all")
-# async def analyze_all(face: UploadFile = File(...), voice: UploadFile = File(...)):
-#     try:
-#         # قراءة الملفات
-#         face_bytes = await face.read()
-#         voice_bytes = await voice.read()
-
-#         # تحليل
-#         face_result = analyze_face_stream(face_bytes)
-#         voice_result = analyze_voice_stream(voice_bytes)
-
-#         # ندمج القرار (Simple Logic)
-#         final_state = voice_result.get("final_emotion", face_result)
-
-#         # نجيب النصيحة
-#         advice = get_intervention(final_state)
-
-#         return {
-#             "status": "success",
-#             "face_emotion": face_result,
-#             "voice_emotion": voice_result,
-#             "final_state": final_state,
-#             "advice": advice,
-#         }
-
-#     except Exception as e:
-#         return {"status": "error", "message": str(e)}
-
 from fastapi import FastAPI, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
 
 from Models.face_recognition import analyze_face_stream
-from Models.online_Voice_model import analyze_voice_stream
+from Models.voice import analyze_voice_stream
 from Rag.knowledge_base import get_intervention
 
 app = FastAPI()
@@ -200,7 +104,7 @@ async def analyze_all(face: UploadFile = File(...), voice: UploadFile = File(...
         voice_result = analyze_voice_stream(voice_bytes)
 
         # استخراج السكورات
-        face_scores = face_response if isinstance(face_response, dict) else {}
+        face_scores = face_response.get("scores", {})
         voice_scores = voice_result.get("details", {})
         voice_conf = voice_result.get("confidence", 0)
 
