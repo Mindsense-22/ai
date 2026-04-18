@@ -102,7 +102,7 @@ class FaceEmotionAnalyzer:
 
 face_analyzer = FaceEmotionAnalyzer()
 
-def analyze_face(image_input):
+def analyze_face_stream(image_input):
     result = face_analyzer.analyze(image_input).model_dump(exclude_none=True)
 
     if result.get("status") == "error":
