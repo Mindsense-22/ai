@@ -2,7 +2,7 @@ from fastapi import FastAPI, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
 
 from Models.face_recognition import analyze_face_stream
-from Models.voice import analyze_voice_stream
+from Models.online_Voice_model import analyze_voice_stream
 from Rag.knowledge_base import get_intervention
 
 app = FastAPI()
